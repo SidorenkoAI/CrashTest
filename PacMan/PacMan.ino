@@ -15,13 +15,21 @@ void setup() {
 }
 
 void loop() {
-  if (stick.getValue() == 1)
-    pack.up();
-  else if (stick.getValue() == 2)
-    pack.right();
-  else if (stick.getValue() == 3)
-    pack.down();
-  else if (stick.getValue() == 4)
-    pack.left();
+  switch (stick.getValue()){
+    case 1:
+      pack.up();
+      break;
+    case 2:
+      pack.right();
+      break;
+    case 3:
+      pack.down();
+      break;
+    case 4:
+      pack.left();
+      break;
+    default:
+      break;
+  }
   pack.ran();
 }

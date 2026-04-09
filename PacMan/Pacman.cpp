@@ -107,8 +107,8 @@ void Pacman::ran(){
   }
 }
 
-void Pacman::tail(){
+void Pacman::tail_Horz(){
   if (value % 2 == 0){
-
+    
   }
 }

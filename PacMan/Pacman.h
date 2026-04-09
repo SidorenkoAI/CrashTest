@@ -22,6 +22,6 @@ public:
   void up();
   void down();
   void ran();
-  void tail();
+  void tail_Horz();
 
 };
