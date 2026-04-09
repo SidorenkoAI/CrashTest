@@ -10,6 +10,9 @@ void Pacman::setup(){
   lcd.createChar(1, (uint8_t*)PacManCloseRight);
   lcd.createChar(2, (uint8_t*)PacManOpenLeft);
   lcd.createChar(3, (uint8_t*)PacManCloseLeft);
+  lcd.createChar(4, (uint8_t*)point);
+  lcd.createChar(5, (uint8_t*)tail_sprite_Horz);
+  lcd.createChar(6, (uint8_t*)tail_sprite_Vert);
   
 }
 
@@ -91,4 +94,21 @@ void Pacman::down(){
   mouth = !mouth;
 
   delay(100);
+}
+
+void Pacman::ran(){
+  if ((x == Xr) && (y == Yr)){
+    Xr = random(20);
+    Yr = random(4);
+
+    lcd.setCursor(Xr, Yr);
+    lcd.write(4);
+    value++;
+  }
+}
+
+void Pacman::tail(){
+  if (value % 2 == 0){
+
+  }
 }

@@ -1,6 +1,6 @@
 #include <LiquidCrystal_I2C.h>
 #include "Sprites.h"
-// #include "Mechanic.h"
+//#include "Mechanic.h"
 #include "Pacman.h"
 #include "Stick.h"
 
@@ -23,5 +23,5 @@ void loop() {
     pack.down();
   else if (stick.getValue() == 4)
     pack.left();
-
+  pack.ran();
 }

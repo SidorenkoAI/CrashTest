@@ -11,6 +11,9 @@ class Pacman{
   bool mouth = false;
   int x = 0;
   int y = 0;
+  int Xr = 0;
+  int Yr = 0;
+  int value = 0;
 public:
   Pacman();
   void setup();
@@ -18,5 +21,7 @@ public:
   void left();
   void up();
   void down();
+  void ran();
+  void tail();
 
 };

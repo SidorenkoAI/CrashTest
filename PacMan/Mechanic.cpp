@@ -32,6 +32,4 @@ void Basic::animation(){
   _lcd->write(mouth ? 0 : 1);
 
   mouth = !mouth;
-
-  
 }
