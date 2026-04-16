@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "author": "Anonymous maker",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "wokwi-arduino-uno", "id": "uno", "top": 48.6, "left": 57, "attrs": {} },
+    {
+      "type": "wokwi-analog-joystick",
+      "id": "joystick1",
+      "top": 114.6,
+      "left": 408.6,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-led-matrix",
+      "id": "matrix1",
+      "top": -512.4,
+      "left": 1.8,
+      "attrs": { "rows": "20", "cols": "20" }
+    },
+    {
+      "type": "wokwi-led-strip",
+      "id": "strip1",
+      "top": -7.5,
+      "left": 393.6,
+      "attrs": { "pixels": "20" }
+    },
+    { "type": "wokwi-potentiometer", "id": "pot1", "top": 113.9, "left": -19.4, "attrs": {} }
+  ],
+  "connections": [
+    [ "joystick1:VCC", "uno:5V", "red", [ "v57.6", "h-662.4" ] ],
+    [ "joystick1:VERT", "uno:A0", "green", [ "v67.2", "h-614.4" ] ],
+    [ "joystick1:HORZ", "uno:A1", "white", [ "v76.8", "h-614.4" ] ],
+    [ "joystick1:SEL", "uno:7", "purple", [ "v9.6", "h48", "v-201.6", "h-704.4" ] ],
+    [ "joystick1:GND", "uno:GND.2", "black", [ "v86.4", "h-662.4" ] ],
+    [ "matrix1:DIN", "uno:9", "gold", [ "v0" ] ],
+    [ "matrix1:VSS", "uno:GND.2", "black", [ "v9.6", "h85.6", "v288", "h-96" ] ],
+    [ "strip1:VSS", "uno:GND.2", "black", [ "h-67.2", "v239.2", "h-96" ] ],
+    [ "strip1:DIN", "uno:8", "orange", [ "h0" ] ],
+    [ "strip1:VDD", "uno:5V", "red", [ "h-57.6", "v288", "h-124.8" ] ],
+    [ "matrix1:VDD", "uno:5V", "red", [ "v19.2", "h105.2", "v307.2", "h-124.8" ] ],
+    [ "pot1:GND", "uno:GND.2", "black", [ "v134.4", "h249.6" ] ],
+    [ "pot1:VCC", "uno:5V", "red", [ "v105.6", "h210.4" ] ],
+    [ "pot1:SIG", "uno:A2", "blue", [ "v96", "h297.2" ] ]
+  ],
+  "dependencies": {}
+}
