@@ -27,11 +27,11 @@ void loop() {
   }
   matrix.show();
   if (stick.getValue() == 1)
-    dot = dot + 20;
+    dot = (dot + 20);
   else if (stick.getValue() == 2)
     dot++;
   else if (stick.getValue() == 3)
-    dot = dot - 20;
+    dot = (dot - 20);
   else if (stick.getValue() == 4)
     dot--;
   
