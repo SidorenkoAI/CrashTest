@@ -16,13 +16,16 @@ void setup() {
 
 void loop() {
   Serial.println(st.getValue());
-  int dot = 150;
-  for (int i = 0; i < NUM_PIXELS; i++) {
-    if (i == dot)
-      matrix.setPixelColor(i, matrix.Color(255, 127, 0)); 
-    else
-      matrix.setPixelColor(i, matrix.Color(0, 0, 150)); 
+  //int dot = 150;
+  for (int dot = 0; dot < NUM_PIXELS; dot++){
+      for (int i = 0; i < NUM_PIXELS; i++) {
+        if (i == dot)
+          matrix.setPixelColor(i, matrix.Color(255, 127, 0)); 
+        else
+          matrix.setPixelColor(i, matrix.Color(0, 0, 150)); 
+      }
+      matrix.show();
+      delay(100);
   }
-  matrix.show();
-  delay(10);
+  
 }
