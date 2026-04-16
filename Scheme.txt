@@ -38,7 +38,10 @@
     [ "strip1:DIN", "uno:8", "green", [ "h-76.8", "v-624.4", "h249.2" ] ],
     [ "strip1:VSS", "uno:GND.2", "black", [ "h-105.6", "v-231.2", "h268.8" ] ],
     [ "matrix1:VDD", "uno:5V", "red", [ "v19.2", "h-570.6" ] ],
-    [ "matrix1:VSS", "uno:GND.2", "black", [ "v38.4", "h-567.2" ] ]
+    [ "matrix1:VSS", "uno:GND.2", "black", [ "v38.4", "h-567.2" ] ],
+    [ "pot1:GND", "uno:GND.2", "black", [ "v38.4", "h9.6" ] ],
+    [ "pot1:SIG", "uno:A2", "green", [ "v19.2", "h162.8" ] ],
+    [ "pot1:VCC", "uno:5V", "red", [ "v9.6", "h76" ] ]
   ],
   "dependencies": {}
 }
