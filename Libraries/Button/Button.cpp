@@ -13,7 +13,7 @@
   bool Button::pressed(){
       static bool flag = true;
       bool press = false;
-      bool but = digitalRead(pin);
+      bool but = !digitalRead(pin);
       if(but && flag){
         delay(10);
         if(digitalRead(pin)){
@@ -27,11 +27,14 @@
       }
       return press;
   }
-
+  
   int Button::getCounter(){
     return counter;
   }
 
   void Button::Reset(){
     counter = 0;
+  }
+  int Longpressed(){
+    
   }
