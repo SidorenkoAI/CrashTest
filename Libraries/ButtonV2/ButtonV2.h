@@ -3,10 +3,13 @@
 class Button{
   int pin;
   int counter;
+  int longcounter;
 public:
   Button();
   Button(int p);
-  bool pressed();
+  void pressed();
   int getCounter();
-  void Reset();
+  void ResetCounter();
+  int getLongCounter();
+  void ResetLongCounter();
 };
