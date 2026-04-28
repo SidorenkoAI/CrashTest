@@ -1,5 +1,6 @@
-#include <RGBrejim.h>   // Библиотека для управления RGB-светодиодом (скорее всего, самодельная)
+#include "RGBrejim.h"   // Библиотека для управления RGB-светодиодом (скорее всего, самодельная)
 #include <EEPROM.h>     // Библиотека для работы с энергонезависимой памятью
+#include "ButtonV2.h"
 
 // Адреса в EEPROM для хранения значений яркости каждого канала
 const int EEPROM_ADDR_R = 0;   // адрес для красного
@@ -67,7 +68,22 @@ void LightPot() {
   }
 }
 
+Button b(2);
+void testButton(){
+  
+  
+  b.pressed();
+  Serial.print(b.getLongCounter());
+  Serial.print(" ");
+  Serial.println(b.getCounter());
+
+}
+
 void loop() {
+  testButton();
+  
+  /*
+  
   bool fotoresPokas = digitalRead(fotores);   // читаем фоторезистор 
 
   // Если таймер после движения не активен, управляем On только по фоторезистору
@@ -103,4 +119,5 @@ void loop() {
       On = true;                       // пока таймер не истёк – подсветка включена
     }
   }
+  */
 }
