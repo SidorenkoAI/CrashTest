@@ -16,32 +16,37 @@ void setup() {
   pinMode(SVET_PIN, OUTPUT);
 }
 
+uint32_t t;
+
 void loop() {
   static uint32_t tmr;
 
   int analogValue = analogRead(PHOTO_APIN);
-  float voltage = analogValue / 1024. * 5;
-  float resistance = 2000 * voltage / (1 - voltage / 5);
-  float lux = pow(RL10 * 1e3 * pow(10, GAMMA) / resistance, (1 / GAMMA));
+  // float voltage = analogValue / 1024. * 5;
+  // float resistance = 2000 * voltage / (1 - voltage / 5);
+  // float lux = pow(RL10 * 1e3 * pow(10, GAMMA) / resistance, (1 / GAMMA));
 
   int PIR = digitalRead(PIR_PIN);
   int BUTTON = digitalRead(BUTTON_PIN);
-
+  static bool flag = false;
   // Первая задача
   if (PIR == 1){
     digitalWrite(SVET_PIN, HIGH);
-    EVERY_S(10) {
+    flag = true;
+    t = millis();
+  }
+  if (flag and !PIR){
+    
+    if (millis() - t > 5000){
       digitalWrite(SVET_PIN, LOW);
+      flag = false;
     }
+        
+    
   }
   else if (PIR == 0){
     
   }
 
-  if (BUTTON == 1){
-    digitalWrite(SVET_PIN, HIGH);
-    EVERY_MS(30000) {
-      digitalWrite(SVET_PIN, LOW);
-    }
-  }
+  
 }
