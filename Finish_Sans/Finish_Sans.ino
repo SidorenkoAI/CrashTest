@@ -34,6 +34,9 @@ void loop() {
       digitalWrite(SVET_PIN, LOW);
     }
   }
+  else if (PIR == 0){
+    
+  }
 
   if (BUTTON == 1){
     digitalWrite(SVET_PIN, HIGH);
