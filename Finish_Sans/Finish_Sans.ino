@@ -10,20 +10,25 @@ const float RL10 = 50;
 
 
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(9600);
   pinMode(BUTTON_PIN, INPUT);
   pinMode(PIR_PIN, INPUT);
   pinMode(SVET_PIN, OUTPUT);
 }
 
+<<<<<<< HEAD
 uint32_t t;
 uint32_t handT;
 static uint32_t time = millis();
 static uint32_t Move = 0;
 static uint32_t MoveT = 0;
+=======
+uint32_t t, handT;
+>>>>>>> 9080bae0b270883c73ba2442f00b56919463dbc0
 
 void loop() {
   int analogValue = analogRead(PHOTO_APIN);
+<<<<<<< HEAD
   float voltage = analogValue / 1024. * 5;
   float resistance = 2000 * voltage / (1 - voltage / 5);
   float lux = pow(RL10 * 1e3 * pow(10, GAMMA) / resistance, (1 / GAMMA));
@@ -48,6 +53,40 @@ void loop() {
   if (!dark) {
     Move = 0;
     MoveT = millis();
+=======
+  
+  int PIR = digitalRead(PIR_PIN);
+  int BUTTON = digitalRead(BUTTON_PIN);
+ 
+
+// Первая задача
+
+  static bool hand = false;
+  if (BUTTON){
+    digitalWrite(SVET_PIN, HIGH);
+    hand = true;
+    handT = millis();
+  }
+if (hand)
+  if (millis() - handT > 30000){
+    digitalWrite(SVET_PIN, LOW);
+    hand = false;
+  }
+
+ 
+ 
+  if (PIR == 1){
+    digitalWrite(SVET_PIN, HIGH);
+    t = millis();
+  }
+  if (!hand and !PIR){
+    if (millis() - t > 5000){
+      digitalWrite(SVET_PIN, LOW);
+    
+    }
+        
+    
+>>>>>>> 9080bae0b270883c73ba2442f00b56919463dbc0
   }
 
   
