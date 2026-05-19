@@ -56,11 +56,10 @@ void loop() {
     t = millis();
   }
 
-  if(dark && PIR && !lastPIR){
+  if (dark && PIR && !lastPIR) {
     Move++;
     Serial.println(Move);
-
-    if (Move == 1){
+    if (Move == 1) {
       MoveT = millis();
     }
   }
