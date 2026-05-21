@@ -1,123 +1,116 @@
-#include "RGBrejim.h"   // Библиотека для управления RGB-светодиодом (скорее всего, самодельная)
-#include <EEPROM.h>     // Библиотека для работы с энергонезависимой памятью
-#include "ButtonV2.h"
-
-// Адреса в EEPROM для хранения значений яркости каждого канала
-const int EEPROM_ADDR_R = 0;   // адрес для красного
-const int EEPROM_ADDR_G = 1;   // адрес для зелёного
-const int EEPROM_ADDR_B = 2;   // адрес для синего
-
-// Пины
-int movement = 8;      // вход от датчика движения 
-int fotores = 6;       // вход от модуля датчика освещённости 
-RGBrejim RGB(7, 9, 10, 11);  // объект RGB:Button,Redpin,Greenpin,Bluepin, (общий анод)
-int pot = A0;          // потенциометр для управления яркостью выбранного канала
-
-// Переменные таймера
-unsigned long Timer = 0;   // метка времени для таймера 30 секунд
-bool On = false;           // флаг – включена ли подсветка в данный момент
-bool Speedmovement = false; // флаг – сработал ли датчик движения 
-bool Actimer = false;      // флаг – активен ли таймер после срабатывания движения
-
-// Текущие значения яркости (0..255)
+#include <Arduino.h>
+#include <Encoder.h> 
+#include <RGBrejim.h>   
+#include <EEPROM.h>   
+#include <ButtonV2.h>
+Encoder Enc(4,2,3);
+const int RedRom = 0;   
+const int GreenRom = 1;   
+const int BlueRom = 2;   
+#define VolumeSensor 5
+#define movement 8     
+#define fotores 6 
+Button EncBut(4); 
+int LightSvet = 0;  
+RGBrejim RGB(7, 9, 10, 11);  
+unsigned long Timer = 0; 
+int brightness=0; 
+int SummMovement=0; 
+bool LedOn = false;         
+bool Speedmovement = false; 
+bool Actimer = false;      
+bool VolumeZnach = false;
+bool fotoresPokas;
 int Rpot;
 int Gpot;
 int Bpot;
 
 void setup() {
-  Serial.begin(9600);   // для отладки 
-
-  // При запуске считываем последние сохранённые значения яркости из EEPROM
-  Rpot = EEPROM.read(EEPROM_ADDR_R);
-  Gpot = EEPROM.read(EEPROM_ADDR_G);
-  Bpot = EEPROM.read(EEPROM_ADDR_B);
+  Serial.begin(9600);  
+  Rpot = EEPROM.read(RedRom);
+  Gpot = EEPROM.read(GreenRom);
+  Bpot = EEPROM.read(BlueRom);
 }
 
-// Функция, которая вызывается, когда нужно настроить яркость текущего канала
-void LightPot() {
-  int pokazpot = analogRead(pot);                     // читаем потенциометр (0..1023)
-  int LightSvet = map(pokazpot, 0, 1023, 0, 255);     // преобразуем в диапазон 0..255
-
-  // RGB.getLong() – возвращает сколько раз кнопка удержена
+void GammaLed() {
   switch (RGB.getLong()) {
-    case 1: {   // настройка красного канала
-      if (Rpot != LightSvet) {          // если значение изменилось
-        Rpot = LightSvet;               // обновляем переменную
-        EEPROM.write(EEPROM_ADDR_R, (byte)Rpot);  // и сохраняем в EEPROM
-      }
+    case 1: {         
+          Rpot=brightness;      
       break;
     }
-    case 2: {   // настройка зелёного канала
-      if (Gpot != LightSvet) {
-        Gpot = LightSvet;
-        EEPROM.write(EEPROM_ADDR_G, (byte)Gpot);
-      }
+    case 2: {  
+          Gpot=brightness;    
       break;
     }
-    case 3: {   // настройка синего канала
-      if (Bpot != LightSvet) {
-        Bpot = LightSvet;
-        EEPROM.write(EEPROM_ADDR_B, (byte)Bpot);
-      }
+    case 3: {           
+          Bpot=brightness;   
       break;
     }
-    case 4: {   // сброс выбора канала (не трогает сохранённые яркости)
-      RGB.ResetLong();
+    case 4: {   
+       EEPROM.write(RedRom, (byte)Rpot); 
+       EEPROM.write(GreenRom, (byte)Gpot);
+       EEPROM.write(BlueRom, (byte)Bpot);   
+       RGB.ResetLong();
       break;
     }
   }
-}
-
-Button b(2);
-void testButton(){
-  
-  
-  b.pressed();
-  Serial.print(b.getLongCounter());
-  Serial.print(" ");
-  Serial.println(b.getCounter());
-
 }
 
 void loop() {
-  testButton();
-  
-  /*
-  
-  bool fotoresPokas = digitalRead(fotores);   // читаем фоторезистор 
-
-  // Если таймер после движения не активен, управляем On только по фоторезистору
+Speedmovement = digitalRead(movement);
+VolumeZnach=digitalRead(VolumeSensor);
+fotoresPokas = digitalRead(fotores);
+brightness=Enc.pollEnc();
   if (!Actimer) {
     if (fotoresPokas == true) {
-      On = true;     // темно – включаем подсветку
+      LedOn = true;    
     } else {
-      On = false;    // светло – выключаем
+      LedOn = false;   
     }
   }
-  
-  // Обработка датчика движения
-  Speedmovement = digitalRead(movement);
-  if (Speedmovement == true) {
-    Actimer = true;          // запускаем таймер (подсветка будет гореть принудительно 30 секунд)
-    Timer = millis();        // запоминаем момент срабатывания
+  if (Speedmovement) {         
+   int TimerDrebezg = millis();
+   if(millis() - TimerDrebezg > 3000){ //В реальности датчик движения отправляет значение не один раз, а несколько.3000 - задержка между концом движения и прекращением отправки значения 
+       SummMovement++;
+       TimerDrebezg=0;
+      }  
+  }  
+  if (Speedmovement || VolumeZnach) {
+    Actimer = true;         
+    Timer = millis();        
   }
-  
-  // Управление RGB-светодиодом
-  if (On == true) {
-    LightPot();                        // позволяем потенциометру менять яркость текущего канала
-    RGB.RGBsvet(Rpot, Gpot, Bpot);     // устанавливаем цвет с сохранёнными/изменёнными значениями
+  if (LedOn == true) {
+    GammaLed();           
+    RGB.RGBsvet(Rpot, Gpot, Bpot);     
   } else {
-    RGB.RGBoff();                      // выключаем светодиод
-  }
-  
-  // Работа таймера после движения: 30 секунд подсветка горит всегда (On = true)
+    RGB.RGBoff();                      
+  } 
   if (Actimer) {
-    if (millis() - Timer >= 30000) {   // прошло 30 секунд?
-      On = false;                      // выключаем подсветку
-      Actimer = false;                 // выходим из режима таймера
+    if (millis() - Timer > 30000) {   
+      LedOn = false;                      
+      Actimer = false;                 
     } else {
-      On = true;                       // пока таймер не истёк – подсветка включена
+      LedOn = true;                       
     }
   }
-  */
+  if(SummMovement>=4){
+    LedOn=false;
+  Rpot = 0;
+  Gpot = 255;
+  Bpot = 255;
+  int time=millis();
+  if(millis()-time==500){
+    Rpot = 0;
+  Gpot = 255;
+  Bpot = 255;
+  }
+  }
+  if (Enc.EncButton()){
+  EEPROM.write(RedRom,255);
+  EEPROM.write(GreenRom,255);
+  EEPROM.write(BlueRom,255);
+  Rpot = 255;
+  Gpot = 255;
+  Bpot = 255;
+  }
 }

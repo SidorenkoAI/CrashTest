@@ -12,10 +12,6 @@
 int RGBrejim::RGBsvet(int Rlight, int Glight, int Blight){
   but.pressed();
   switch(but.getCounter()){
-    case 0:{   
-   RGBoff();
-    }
-    break;
     case 1:{
       analogWrite(pinR,Rlight);
       analogWrite(pinG,Glight);
@@ -29,6 +25,7 @@ int RGBrejim::RGBsvet(int Rlight, int Glight, int Blight){
     }
     break;
     case 3:{
+      RGBoff();
     but.ResetCounter();
     }break;
   }

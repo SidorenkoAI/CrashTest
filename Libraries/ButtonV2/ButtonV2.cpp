@@ -14,26 +14,24 @@ Button::Button(int p){
   
 }
 
-void Button::pressed(){
+int Button::pressed(){
 static bool pState = false;
 static bool hold = false;   // флаг удержания
 static uint32_t tmr;
-int  starlongcounter;
 
 bool state = !digitalRead(pin);
 if (pState != state && millis() - tmr >= 50) {
   tmr = millis();
   pState = state;
   hold = false;
-  starlongcounter=longcounter;
   if (state) counter+=1;
  }
 if (pState && !hold && millis() - tmr >= 500) {
-  hold = true;    // флаг удержания
+  hold = true;    
   longcounter +=1;
   counter -=1;
-  //Serial.print(longcounter);
  } 
+ return state;
 }
 
 int Button::getCounter(){

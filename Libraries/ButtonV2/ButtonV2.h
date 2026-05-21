@@ -1,3 +1,4 @@
+#pragma once
 #include <Arduino.h>
 
 class Button{
@@ -7,7 +8,7 @@ class Button{
 public:
   Button();
   Button(int p);
-  void pressed();
+  int pressed();
   int getCounter();
   void ResetCounter();
   int getLongCounter();
