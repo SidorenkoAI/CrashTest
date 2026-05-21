@@ -29,7 +29,7 @@
   }
  int Encoder::EncButton(){
   static bool pState = false;
-  bool state = digitalRead(But);
+  bool state = !digitalRead(But);
   
   if (pState != state && millis() - timer >= 50) {
     pState = state;
